@@ -1,0 +1,33 @@
+USE jbonviveassign2db;
+-- Query 1
+SELECT Description FROM Products;
+-- Query 2
+SELECT DISTINCT CCity FROM Customers;
+-- Query 3
+SELECT * FROM Agents ORDER BY ACity;
+-- Query 4
+SELECT CFirstName, CLastName FROM Customers WHERE CCity = 'SpringField';
+-- Query 5
+SELECT CLastName FROM Customers WHERE AgentID = '11';
+-- Query 6
+SELECT Description FROM Products WHERE Description LIKE '%pad%' or '%Pad%';
+-- Query 7
+SELECT Customers.CLastName, Products.Description, Purchased.QuantityPurchased FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Products.ProductID = Purchased.ProductID; 
+-- Query 8
+SELECT SUM(QuantityPurchased) AS "Homer's Total Purchases" FROM Purchased WHERE CustomerID = (SELECT CustomerID FROM Customers WHERE CFirstName = 'Homer');
+-- Query 9
+SELECT Customers.CFirstName, Customers.CLastName, SUM(Purchased.QuantityPurchased) FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID GROUP BY Customers.CFirstName;
+-- Query 10
+SELECT Description, QuantityInStock FROM Products WHERE ProductID NOT IN (SELECT ProductID FROM Purchased);
+-- Query 11
+SELECT Description, QuantityInStock FROM Products WHERE ProductID NOT IN (SELECT ProductID FROM Purchased WHERE CustomerID IN(SELECT CustomerID FROM Customers WHERE CFirstName = "Fred" AND CLastName = "Flintstone"));
+-- Query 12
+SELECT Customers.CFirstName, Customers.CLastName, Agents.AFirstName, Agents.ALastName FROM Agents, Customers WHERE Agents.ACity = Customers.CCity;
+-- Query 13
+SELECT SUM(QuantityPurchased) AS "Knee Pads Purchased" FROM Purchased WHERE ProductID IN (SELECT ProductID FROM Products WHERE Description = "Knee Pads");; 
+-- Query 14
+SELECT Description FROM Products WHERE ProductID in (SELECT ProductID FROM Purchased GROUP BY ProductID HAVING COUNT(Purchased.ProductID) > 3);
+-- Query 15
+SELECT AFirstName, ALastName FROM Agents WHERE AgentID IN (SELECT AgentID FROM Customers WHERE CustomerID IN(SELECT CustomerID FROM Purchased WHERE ProductID = (SELECT ProductID FROM Products WHERE Description = "Knee Pads")));
+
+

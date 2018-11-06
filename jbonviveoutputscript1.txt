@@ -1,0 +1,75 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SHOW databases
+--------------
+
+Database
+information_schema
+Assignment3DB
+jbonviveassign2db
+mysql
+performance_schema
+--------------
+DROP database jbonviveassign2db
+--------------
+
+--------------
+CREATE database jbonviveassign2db
+--------------
+
+--------------
+Grant USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'CS3319'
+--------------
+
+--------------
+GRANT ALL PRIVILEGES ON jbonviveassign2db.* TO 'ta'@'localhost'
+--------------
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+--------------
+SHOW Databases
+--------------
+
+Database
+information_schema
+Assignment3DB
+jbonviveassign2db
+mysql
+performance_schema
+--------------
+CREATE table Products(ProductID VARCHAR(2), Description VARCHAR(20), CostPerItem DECIMAL(10,2)  NOT NULL, QuantityInStock int NOT NULL, PRIMARY KEY(ProductID))
+--------------
+
+--------------
+CREATE table Agents(AgentID VARCHAR(2), AFirstName VARCHAR(30), ALastName VARCHAR(30), ACity VARCHAR(30), CommissionPercentage int NOT NULL, PRIMARY KEY(AgentID))
+--------------
+
+--------------
+CREATE table Customers(CustomerID VARCHAR(2), CFirstName VARCHAR(30), CLastName VARCHAR(30), CCity VARCHAR(15), PhoneNumber VARCHAR(8), AgentID VARCHAR(2),  PRIMARY KEY(CustomerID), FOREIGN KEY (AgentID) REFERENCES Agents(AgentID) ON DELETE RESTRICT)
+--------------
+
+--------------
+CREATE table Purchased(QuantityPurchased int,ProductID VARCHAR(2),CustomerID VARCHAR(2),PRIMARY KEY(CustomerID, ProductID), FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE, FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) ON DELETE CASCADE)
+--------------
+
+--------------
+SHOW Databases
+--------------
+
+Database
+information_schema
+Assignment3DB
+jbonviveassign2db
+mysql
+performance_schema

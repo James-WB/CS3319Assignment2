@@ -1,0 +1,8 @@
+SELECT * FROM Customers;
+SELECT * FROM Agents;
+SELECT * FROM Products;
+SELECT * FROM Purchased;
+CREATE VIEW CustomerProductView AS SELECT Customers.CFirstName, Customers.CLastName, Products.Description, Purchased.QuantityPurchased, Products.CostPerItem, Products.CostPerItem * Purchased.QuantityPurchased AS "TotalPrice"  FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Purchased.ProductID = Products.ProductID
+SELECT * FROM CustomerProductView;
+SELECT * FROM CustomerProductView WHERE TotalPrice > 100;
+

@@ -1,10 +1,11 @@
-SHOW databases;
+--File1
+SHOW tables;
 DROP database jbonviveassign2db;
 CREATE database jbonviveassign2db;
 USE jbonviveassign2db;
 Grant USAGE ON *.* TO 'ta'@'localhost';
 DROP USER 'ta'@'localhost';
-CREATE USER 'ta'@'localhost' IDENTIFIED BY 'CS3319';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'CS3319'
 GRANT ALL PRIVILEGES ON jbonviveassign2db.* TO 'ta'@'localhost';
 FLUSH PRIVILEGES;
 SHOW Databases;

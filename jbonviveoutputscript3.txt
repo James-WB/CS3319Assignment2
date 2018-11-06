@@ -1,0 +1,135 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SELECT Description FROM Products
+--------------
+
+Description
+Bike
+Socks
+Trapper Hat
+Elbow Pads
+Knee Pads
+Roller Blades
+Helmet
+--------------
+SELECT DISTINCT CCity FROM Customers
+--------------
+
+CCity
+Boston
+SpringField
+Kypto
+Providence
+--------------
+SELECT * FROM Agents ORDER BY ACity
+--------------
+
+AgentID	AFirstName	ALastName	ACity	CommissionPercentage
+33	David	Letterman	Bedrock	100
+11	Regis	Philbin	Boston	33
+21	Bill	Burr	Boston	1
+66	Courtney	Cox	New York	100
+12	Rosie	Cox	Ottawa	50
+22	Rosie	ODonnell	Ottawa	25
+99	Hugh	Grant	SpringField	16
+--------------
+SELECT CFirstName, CLastName FROM Customers WHERE CCity = 'SpringField'
+--------------
+
+CFirstName	CLastName
+Monty	Burns
+Homer	Simpson
+Sideshow	Bob
+--------------
+SELECT CLastName FROM Customers WHERE AgentID = '11'
+--------------
+
+CLastName
+Rubble
+Flintstone
+--------------
+SELECT Description FROM Products WHERE Description LIKE '%pad%' or '%Pad%'
+--------------
+
+Description
+Elbow Pads
+Knee Pads
+--------------
+SELECT Customers.CLastName, Products.Description, Purchased.QuantityPurchased FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Products.ProductID = Purchased.ProductID
+--------------
+
+CLastName	Description	QuantityPurchased
+Griffens	Elbow Pads	19
+Flintstone	Elbow Pads	2
+Flintstone	Knee Pads	2
+Simpson	Socks	14
+Simpson	Elbow Pads	10
+Simpson	Helmet	20
+Bob	Socks	5
+Bob	Elbow Pads	5
+Bob	Knee Pads	5
+Bob	Helmet	5
+--------------
+SELECT SUM(QuantityPurchased) AS "Homer's Total Purchases" FROM Purchased WHERE CustomerID = (SELECT CustomerID FROM Customers WHERE CFirstName = 'Homer')
+--------------
+
+Homer's Total Purchases
+44
+--------------
+SELECT Customers.CFirstName, Customers.CLastName, SUM(Purchased.QuantityPurchased) FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID GROUP BY Customers.CFirstName
+--------------
+
+CFirstName	CLastName	SUM(Purchased.QuantityPurchased)
+Fred	Flintstone	4
+Homer	Simpson	44
+Peter	Griffens	19
+Sideshow	Bob	20
+--------------
+SELECT Description, QuantityInStock FROM Products WHERE ProductID NOT IN (SELECT ProductID FROM Purchased)
+--------------
+
+Description	QuantityInStock
+Bike	200
+Trapper Hat	100
+Roller Blades	89
+--------------
+SELECT Description, QuantityInStock FROM Products WHERE ProductID NOT IN (SELECT ProductID FROM Purchased WHERE CustomerID IN(SELECT CustomerID FROM Customers WHERE CFirstName = "Fred" AND CLastName = "Flintstone"))
+--------------
+
+Description	QuantityInStock
+Bike	200
+Socks	100
+Trapper Hat	100
+Roller Blades	89
+Helmet	30
+--------------
+SELECT Customers.CFirstName, Customers.CLastName, Agents.AFirstName, Agents.ALastName FROM Agents, Customers WHERE Agents.ACity = Customers.CCity
+--------------
+
+CFirstName	CLastName	AFirstName	ALastName
+Barney	Rubble	Regis	Philbin
+Barney	Rubble	Bill	Burr
+Monty	Burns	Hugh	Grant
+Fred	Flintstone	Regis	Philbin
+Fred	Flintstone	Bill	Burr
+Homer	Simpson	Hugh	Grant
+Sideshow	Bob	Hugh	Grant
+--------------
+SELECT SUM(QuantityPurchased) AS "Knee Pads Purchased" FROM Purchased WHERE ProductID IN (SELECT ProductID FROM Products WHERE Description = "Knee Pads")
+--------------
+
+Knee Pads Purchased
+7
+--------------
+SELECT Description FROM Products WHERE ProductID in (SELECT ProductID FROM Purchased GROUP BY ProductID HAVING COUNT(Purchased.ProductID) > 3)
+--------------
+
+Description
+Elbow Pads
+--------------
+SELECT AFirstName, ALastName FROM Agents WHERE AgentID IN (SELECT AgentID FROM Customers WHERE CustomerID IN(SELECT CustomerID FROM Purchased WHERE ProductID = (SELECT ProductID FROM Products WHERE Description = "Knee Pads")))
+--------------
+
+AFirstName	ALastName
+Regis	Philbin
+Rosie	ODonnell
