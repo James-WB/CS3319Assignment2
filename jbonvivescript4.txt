@@ -1,8 +1,12 @@
+USE jbonviveassign2db;
 SELECT * FROM Customers;
 SELECT * FROM Agents;
 SELECT * FROM Products;
 SELECT * FROM Purchased;
-CREATE VIEW CustomerProductView AS SELECT Customers.CFirstName, Customers.CLastName, Products.Description, Purchased.QuantityPurchased, Products.CostPerItem, Products.CostPerItem * Purchased.QuantityPurchased AS "TotalPrice"  FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Purchased.ProductID = Products.ProductID
+CREATE VIEW CustomerProductView AS SELECT Customers.CFirstName, Customers.CLastName, Products.Description, SUM(Purchased.QuantityPurchased), Products.CostPerItem, SUM(Products.CostPerItem * Purchased.QuantityPurchased) AS "TotalCost" FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Purchased.ProductID = Products.ProductID GROUP BY Customers.CLastName;
 SELECT * FROM CustomerProductView;
-SELECT * FROM CustomerProductView WHERE TotalPrice > 100;
+SELECT * FROM CustomerProductView WHERE "TotalPrice" > 100;
+DELETE FROM product WHERE description = "Trapper Hat";
+DELETE FROM Agents WHERE ACity = "Springfield";
+-- You cant delete the row with Hugh Grant in it since he is an agent that has customers and you cant delete an agent that still is referenced by his customers
 

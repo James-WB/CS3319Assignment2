@@ -1,0 +1,57 @@
+Warning: Using a password on the command line interface can be insecure.
+ERROR 1050 (42S01) at line 6: Table 'CustomerProductView' already exists
+--------------
+SELECT * FROM Customers
+--------------
+
+CustomerID	CFirstName	CLastName	CCity	PhoneNumber	AgentID
+10	Barney	Rubble	Boston	777-1234	11
+12	Monty	Burns	SpringField	789-0000	99
+13	Wonder	Woman	Kypto	888-1234	33
+14	Peter	Griffens	Providence	987-4567	99
+15	Fred	Flintstone	Boston	777-2345	11
+21	Homer	Simpson	SpringField	686-8956	99
+31	Sideshow	Bob	SpringField	686-5555	22
+--------------
+SELECT * FROM Agents
+--------------
+
+AgentID	AFirstName	ALastName	ACity	CommissionPercentage
+11	Regis	Philbin	Boston	33
+12	Rosie	Cox	Ottawa	50
+21	Bill	Burr	Boston	1
+22	Rosie	ODonnell	Ottawa	25
+33	David	Letterman	Bedrock	100
+66	Courtney	Cox	New York	100
+99	Hugh	Grant	SpringField	16
+--------------
+SELECT * FROM Products
+--------------
+
+ProductID	Description	CostPerItem	QuantityInStock
+11	Bike	150.00	200
+12	Socks	2.00	100
+55	Trapper Hat	450.99	100
+66	Elbow Pads	14.25	120
+78	Knee Pads	12.15	70
+88	Roller Blades	75.00	89
+99	Helmet	29.00	30
+--------------
+SELECT * FROM Purchased
+--------------
+
+QuantityPurchased	ProductID	CustomerID
+19	66	14
+2	66	15
+2	78	15
+14	12	21
+10	66	21
+20	99	21
+5	12	31
+5	66	31
+5	78	31
+5	99	31
+--------------
+CREATE VIEW CustomerProductView AS SELECT Customers.CFirstName, Customers.CLastName, Products.Description, SUM(Purchased.QuantityPurchased), Products.CostPerItem, SUM(Products.CostPerItem * Purchased.QuantityPurchased) AS "TotalCost" FROM Purchased JOIN Customers ON Purchased.CustomerID = Customers.CustomerID JOIN Products ON Purchased.ProductID = Products.ProductID GROUP BY Customers.CLastName
+--------------
+
